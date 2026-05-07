@@ -3,50 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <title>Sistema de Créditos</title>
+  <link rel="stylesheet" href="simulador_completo.css">  
 </head>
- 
+
 <body>
- 
+
 <header>
-  <h1>Sistema Básico de Créditos</h1>
-   <link rel="stylesheet" href="simulador_completo.css">
+  <h1>Sistema Básico de Créditos</h1>   
 </header>
- 
+
 <nav>  <!--botones principales-->
   <button onclick="mostrarSeccion('parametros');">Parámetros</button>
   <button onclick="mostrarSeccion('clientes');" >Clientes</button>
+  <button onclick="mostrarSeccion('creditos');" >Crédito</button>
 </nav>
- 
+
 <section id="parametros" >  <!--class="activa"-->
   <h2>Configurar Parámetros</h2>
- 
+
   <label>Tasa de interés:</label>
-  <input type="number" id="tasaInteres">
+  <input type="number" id="tasaInteres" min="10" max="20" value="15">    
   <span>%</span>
- 
+
   <br>
-  <button>Guardar tasa</button>
- 
+  <button onclick="guardarTasa();">Guardar tasa</button>
+
   <p id="mensajeTasa"></p>
 </section>
- 
- 
- 
- 
+
+
+
+
 <section id="clientes" >  <!--class="activa"-->
   <h2>Registro de Clientes</h2>
- 
-  <input type="text"   id="idCedula" placeholder="Cedula">
-  <input type="text"   id="idNombre" placeholder="Nombre">
+
+  <input type="text"   id="idCedula"   placeholder="Cédula">
+  <input type="text"   id="idNombre"   placeholder="Nombre">
   <input type="text"   id="idApellido" placeholder="Apellido">
   <input type="number" id="idIngresos" placeholder="Ingresos">
-  <input type="number" id="idEgresos" placeholder="Egresos">
- 
+  <input type="number" id="idEgresos"  placeholder="Egresos">
+
   <br>
- 
-  <button >Guardar cliente</button>
+
+  <button onclick="guardarCliente();">Guardar cliente</button>
   <button >Limpiar</button>
- 
+
   <table>
     <thead>
       <tr>
@@ -58,47 +59,39 @@
         <th>Acciones</th>
       </tr>
     </thead>
+
     <tbody id="tablaClientes">
-       <tr>
-          <td>1712345678</td>
-          <td>Juan</td>
-          <td>Pérez</td>
-          <td>1200</td>
-          <td>500</td>
-          <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>1723456789</td>
-          <td>María</td>
-          <td>Gómez</td>
-          <td>1500</td>
-          <td>600</td>
-          <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>1734567890</td>
-          <td>Carlos</td>
-          <td>Ramírez</td>
-          <td>900</td>
-          <td>350</td>
-          <td>
-            <button>Actualizar</button>
-            <button>Eliminar</button>
-          </td>
-        </tr>
+       <!-- Aqui viene los datos del FOR en js-->
     </tbody>
+
   </table>
 </section>
- 
- 
- 
+
+<section id="creditos">
+  <h2>Solicitar Crédito</h2>
+
+  <input type="text" id="buscarCedulaCredito">
+  <button onclick="buscarClienteCredito()">Buscar cliente</button>
+
+  <div id="datosClienteCredito" class="card"> 
+  </div>
+
+  <input type="number" id="montoCredito" >
+  <input type="number" id="plazoCredito" >
+
+  <br>
+
+  <button onclick="calcularCredito()">Calcular crédito</button>
+
+  <div id="resultadoCredito"></div>
+
+  <button id="btnSolicitarCredito" onclick="solicitarCredito()" disabled>
+    Solicitar crédito
+  </button>
+</section>
+
 <script src="simulador_completo.js"></script>
 <script src="utilitarios.js"></script>
+<script src="funciones.js"></script>
 </body>
 </html>
