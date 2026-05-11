@@ -255,3 +255,118 @@ function mostrarResultadoCredito(resultado) {
         resultadoCredito.className = "rechazado";
     }
 } 
+
+function calcularCredito() {
+
+    let cedula = recuperaraTexto("buscarCedulaCredito");
+    let cliente = buscarCliente(cedula);
+
+    let monto = recuperarFloat("montoCredito");
+    let plazo = recuperarFloat("plazoCredito");
+
+    if(cliente == null){
+        mostrarTexto("resultadoCredito","Cliente no encontrado");
+        return;
+    }
+
+    let capacidadPago = cliente.ingresos - cliente.egresos;
+
+    let totalPagar = monto * (1 + tasaInteres / 100);
+
+    let cuotaMensual = totalPagar / plazo;
+
+    montoCalculado = monto;
+    plazoCalculado = plazo;
+    cuotaCalculada = cuotaMensual;
+
+    clienteSeleccionado = cliente;
+
+    let resultado = "";
+
+    if(cuotaMensual <= capacidadPago * 0.4){
+        resultado = "APROBADO";
+        creditoAprobado = true;
+
+        document.getElementById("btnAsignarCredito").disabled = false;
+
+    }else{
+        resultado = "RECHAZADO";
+        creditoAprobado = false;
+
+        document.getElementById("btnAsignarCredito").disabled = true;
+    }
+
+    document.getElementById("resultadoCredito").innerHTML =
+        "Capacidad de pago: " + capacidadPago + "<br>" +
+        "Total a pagar: " + totalPagar + "<br>" +
+        "Cuota mensual: " + cuotaMensual + "<br>" +
+        "Resultado: " + resultado;
+}
+
+function asignarCredito(){
+
+    let credito = {
+        cedula: clienteSeleccionado.cedula,
+        nombre: clienteSeleccionado.nombre,
+        apellido: clienteSeleccionado.apellido,
+        monto: montoCalculado,
+        tasa: tasaInteres,
+        plazo: plazoCalculado,
+        cuota: cuotaCalculada
+    };
+
+    creditos.push(credito);
+
+    alert("Crédito asignado correctamente");
+}
+
+function buscarCreditos(cedula){
+
+    let creditosCliente = [];
+
+    for(let i = 0; i < creditos.length; i++){
+
+        let credito = creditos[i];
+
+        if(credito.cedula == cedula){
+            creditosCliente.push(credito);
+        }
+    }
+
+    return creditosCliente;
+}
+
+function pintarCreditos(listaCreditos){
+
+    let tabla = document.getElementById("tablaCreditos");
+
+    tabla.innerHTML = "";
+
+    let fila = "";
+
+    for(let i = 0; i < listaCreditos.length; i++){
+
+        let credito = listaCreditos[i];
+
+        fila += "<tr>" +
+                    "<td>" + credito.cedula + "</td>" +
+                    "<td>" + credito.nombre + "</td>" +
+                    "<td>" + credito.apellido + "</td>" +
+                    "<td>" + credito.monto + "</td>" +
+                    "<td>" + credito.tasa + "</td>" +
+                    "<td>" + credito.plazo + "</td>" +
+                    "<td>" + credito.cuota + "</td>" +
+                "</tr>";
+    }
+
+    tabla.innerHTML = fila;
+}
+
+function buscarCreditosCliente(){
+
+    let cedula = recuperaraTexto("buscarCedulaHistorial");
+
+    let lista = buscarCreditos(cedula);
+
+    pintarCreditos(lista);
+}
